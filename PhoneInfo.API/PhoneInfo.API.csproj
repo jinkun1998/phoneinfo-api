@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PhoneInfo.API.Core\PhoneInfo.API.Core.csproj" />
+    <ProjectReference Include="..\PhoneInfo.API.Services.User\PhoneInfo.API.Services.User.csproj" />
+  </ItemGroup>
+
+
+</Project>
