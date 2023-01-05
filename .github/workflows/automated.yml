@@ -6,7 +6,7 @@ on:
       - "main"
     
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-lastest
     
     steps:
@@ -16,6 +16,15 @@ jobs:
           dotnet-version: 5.0
       - name: build
         run: dotnet build
+        
+  tests:
+    runs-on: ubuntu-lastest
+
+    steps:
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3.0.3
+        with:
+          dotnet-version: 5.0
       - name: test
         run: dotnet test
-    
+
