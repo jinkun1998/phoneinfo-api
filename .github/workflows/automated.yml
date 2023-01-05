@@ -1,0 +1,17 @@
+name: Run automated job
+
+on:
+  push:
+    branches:
+      - "main"
+    
+jobs:
+  tests:
+    run-on: ubuntu-lastest
+    
+    steps:
+      - name: build
+        uses: dotnet build
+      - name: test
+        uses: dotnet test
+    
