@@ -18,7 +18,8 @@ jobs:
         uses: actions/checkout@v3.3.0
       - name: Build
         working-directory: .
-        run: 
+        run:
+          dotnet restore PhoneInfo.API.sln
           dotnet build PhoneInfo.API.sln
         
   tests:
@@ -29,6 +30,11 @@ jobs:
         uses: actions/setup-dotnet@v3.0.3
         with:
           dotnet-version: 5.0
-      - name: test
-        run: dotnet test ../../PhoneInfo.API.sln
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+      - name: Tests
+        working-directory: .
+        run: 
+          dotnet restore PhoneInfo.API.sln
+          dotnet test PhoneInfo.API.sln
 
