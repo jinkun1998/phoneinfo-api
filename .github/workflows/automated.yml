@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 5.0
       - name: build
-        run: dotnet build
+        run: dotnet build ../PhoneInfo.API.sln
         
   tests:
     runs-on: ubuntu-lastest
@@ -26,5 +26,5 @@ jobs:
         with:
           dotnet-version: 5.0
       - name: test
-        run: dotnet test
+        run: dotnet test ../PhoneInfo.API.sln
 
