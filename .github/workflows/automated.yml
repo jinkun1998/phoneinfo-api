@@ -26,5 +26,8 @@ jobs:
       - name: Test
         run: 
           dotnet test PhoneInfo.API.sln
+      - name: SonarCloud Scan
+        uses: 
+          SonarSource/sonarcloud-github-action@v1.8
       
 
