@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 5.0
       - name: build
         working-directory: .
-        run: echo ls
+        run: echo $GITHUB_ACTION_PATH $GITHUB_PATH
         
   tests:
     runs-on: ubuntu-lastest
