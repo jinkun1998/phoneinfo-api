@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.API.Host", "3.API.Host", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneInfo.API.Core", "PhoneInfo.API.Core\PhoneInfo.API.Core.csproj", "{EF32B2A5-6660-4142-9674-BC7689A992DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneInfo.API.Services.User", "PhoneInfo.API.Services.User\PhoneInfo.API.Services.User.csproj", "{1275F900-368D-4349-8F7B-3EE614DBF1DB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1275F900-368D-4349-8F7B-3EE614DBF1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1275F900-368D-4349-8F7B-3EE614DBF1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1275F900-368D-4349-8F7B-3EE614DBF1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1275F900-368D-4349-8F7B-3EE614DBF1DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,7 +34,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{99B7FA2F-EB4E-4ABE-AAAC-C520E346451A} = {73A0229E-217F-45DF-AE4C-6FC9BF1FE344}
 		{EF32B2A5-6660-4142-9674-BC7689A992DF} = {36BFEE5B-27FF-4461-92B3-44963C3B1624}
-		{1275F900-368D-4349-8F7B-3EE614DBF1DB} = {D57F4C0C-9E1A-44C5-87D0-76DD28CFF088}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F2F5049-2DE2-41AD-BD42-F817598DEB95}

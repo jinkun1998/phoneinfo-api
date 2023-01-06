@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneInfo.API.Core;
 using PhoneInfo.API.Core.Middlewares;
-using PhoneInfo.API.Services.User;
 
 namespace PhoneInfo.API
 {
@@ -29,7 +28,6 @@ namespace PhoneInfo.API
             #endregion
 
             #region Service
-            services.AddUserService();
             #endregion
         }
 

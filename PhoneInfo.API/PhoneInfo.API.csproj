@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PhoneInfo.API.Core\PhoneInfo.API.Core.csproj" />
-    <ProjectReference Include="..\PhoneInfo.API.Services.User\PhoneInfo.API.Services.User.csproj" />
   </ItemGroup>
 
 
