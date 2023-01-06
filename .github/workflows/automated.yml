@@ -1,4 +1,4 @@
-name: Run automated job
+name: Restore, build and test
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "main"
     
 jobs:
-  build:
+  restore:
     runs-on: ubuntu-20.04
     
     steps:
@@ -16,25 +16,40 @@ jobs:
           dotnet-version: 5.0
       - name: Checkout
         uses: actions/checkout@v3.3.0
-      - name: Build
+      - name: Restore
         working-directory: .
         run:
           dotnet restore PhoneInfo.API.sln
-          dotnet build PhoneInfo.API.sln
+  
+#   build:
+#     runs-on: ubuntu-20.04
+    
+#     steps:
+#       - name: Setup .NET Core SDK
+#         uses: actions/setup-dotnet@v3.0.3
+#         with:
+#           dotnet-version: 5.0
+#       - name: Checkout
+#         uses: actions/checkout@v3.3.0
+#       - name: Build
+#         working-directory: .
+#         run:
+#           dotnet restore PhoneInfo.API.sln
+#           dotnet build PhoneInfo.API.sln
         
-  tests:
-    runs-on: ubuntu-lastest
+#   tests:
+#     runs-on: ubuntu-lastest
 
-    steps:
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v3.0.3
-        with:
-          dotnet-version: 5.0
-      - name: Checkout
-        uses: actions/checkout@v3.3.0
-      - name: Tests
-        working-directory: .
-        run: 
-          dotnet restore PhoneInfo.API.sln
-          dotnet test PhoneInfo.API.sln
+#     steps:
+#       - name: Setup .NET Core SDK
+#         uses: actions/setup-dotnet@v3.0.3
+#         with:
+#           dotnet-version: 5.0
+#       - name: Checkout
+#         uses: actions/checkout@v3.3.0
+#       - name: Tests
+#         working-directory: .
+#         run: 
+#           dotnet restore PhoneInfo.API.sln
+#           dotnet test PhoneInfo.API.sln
 
