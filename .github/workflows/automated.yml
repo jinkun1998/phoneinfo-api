@@ -17,11 +17,7 @@ jobs:
       - name: build
         working-directory: .
         run: 
-          echo $GITHUB_ACTION_PATH 
-          echo $GITHUB_PATH
-          echo $GITHUB_ACTION_REPOSITORY
-          echo $GITHUB_REPOSITORY
-          echo $GITHUB_REPOSITORY_OWNER
+          echo $GITHUB_REPOSITORY/PhoneInfo.API.sln
         
   tests:
     runs-on: ubuntu-lastest
