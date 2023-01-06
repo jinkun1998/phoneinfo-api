@@ -16,7 +16,12 @@ jobs:
           dotnet-version: 5.0
       - name: build
         working-directory: .
-        run: echo $GITHUB_ACTION_PATH $GITHUB_PATH
+        run: 
+          echo $GITHUB_ACTION_PATH 
+          echo $GITHUB_PATH
+          echo $GITHUB_ACTION_REPOSITORY
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_REPOSITORY_OWNER
         
   tests:
     runs-on: ubuntu-lastest
