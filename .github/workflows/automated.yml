@@ -22,7 +22,7 @@ jobs:
           dotnet build PhoneInfo.API.sln
         
   tests:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Setup .NET Core SDK

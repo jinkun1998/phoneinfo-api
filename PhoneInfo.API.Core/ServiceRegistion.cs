@@ -13,85 +13,91 @@ using System.Text;
 
 namespace PhoneInfo.API.Core
 {
-    public static class ServiceRegistion
-    {
-        #region Session
-        public static void AddSessionServiceLayer(this IServiceCollection services)
-        {
-            services.AddDistributedMemoryCache();
-            services.AddSession();
-        }
-        #endregion
+	public static class ServiceRegistion
+	{
+		#region Session
 
-        #region Jwt
-        public static void AddJwtServiceLayer(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IJwtService, JwtService>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidIssuer = configuration["Jwt:Issuer"],
-                        ValidAudience = configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
-        }
+		public static void AddSessionServiceLayer(this IServiceCollection services)
+		{
+			services.AddDistributedMemoryCache();
+			services.AddSession();
+		}
 
-        public static void UseJwtService(this IApplicationBuilder app)
-        {
-            app.UseAuthentication();
-        }
-        #endregion
+		#endregion Session
 
-        #region Swagger
-        public static void AddSwaggerServiceLayer(this IServiceCollection services)
-        {
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo()
-                {
-                    Title = "Phone Info API",
-                    Version = "v1"
-                });
-                options.AddSecurityDefinition("Phone Info API v1", new OpenApiSecurityScheme()
-                {
-                    BearerFormat = "JWT",
-                    Name = "Phone Info API v1",
-                    In = ParameterLocation.Header,
-                    Scheme = "Bearer",
-                    Type = SecuritySchemeType.Http,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-                });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme()
-                        {
-                            Reference = new OpenApiReference()
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        }, new List<string>()
-                    }
-                });
-            });
-        }
+		#region Jwt
 
-        public static void UseSwaggerService(this IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Phone Info API V1"));
-            }
-        }
-        #endregion
-    }
+		public static void AddJwtServiceLayer(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddTransient<IJwtService, JwtService>();
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+					{
+						ValidIssuer = configuration["Jwt:Issuer"],
+						ValidAudience = configuration["Jwt:Audience"],
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+						ValidateIssuerSigningKey = true,
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ClockSkew = TimeSpan.Zero
+					};
+				});
+		}
+
+		public static void UseJwtService(this IApplicationBuilder app)
+		{
+			app.UseAuthentication();
+		}
+
+		#endregion Jwt
+
+		#region Swagger
+
+		public static void AddSwaggerServiceLayer(this IServiceCollection services)
+		{
+			services.AddSwaggerGen(options =>
+			{
+				options.SwaggerDoc("v1", new OpenApiInfo()
+				{
+					Title = "Phone Info API",
+					Version = "v1"
+				});
+				options.AddSecurityDefinition("Phone Info API v1", new OpenApiSecurityScheme()
+				{
+					BearerFormat = "JWT",
+					Name = "Phone Info API v1",
+					In = ParameterLocation.Header,
+					Scheme = "Bearer",
+					Type = SecuritySchemeType.Http,
+					Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+				});
+				options.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+					{
+						new OpenApiSecurityScheme()
+						{
+							Reference = new OpenApiReference()
+							{
+								Type = ReferenceType.SecurityScheme,
+								Id = "Bearer"
+							}
+						}, new List<string>()
+					}
+				});
+			});
+		}
+
+		public static void UseSwaggerService(this IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Phone Info API V1"));
+			}
+		}
+
+		#endregion Swagger
+	}
 }
