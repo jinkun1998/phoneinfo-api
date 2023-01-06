@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 5.0
       - name: build
         working-directory: .
-        run: ls
+        run: dotnet build PhoneInfo.API.sln
         
   tests:
     runs-on: ubuntu-lastest
