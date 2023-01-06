@@ -15,8 +15,8 @@ jobs:
         with:
           dotnet-version: 5.0
       - name: build
-        working-directory: ../../
-        run: dotnet build PhoneInfo.API.sln
+        working-directory: ./.github/workflows
+        run: dotnet build ../../PhoneInfo.API.sln
         
   tests:
     runs-on: ubuntu-lastest
