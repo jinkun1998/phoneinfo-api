@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneInfo.API", "PhoneInfo.API\PhoneInfo.API.csproj", "{99B7FA2F-EB4E-4ABE-AAAC-C520E346451A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6} = {292A047D-014D-4B4E-84BF-060B0A01E2F6}
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173} = {2D545ADE-14D8-4CA6-9E57-AB2CB9478173}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.API.Services", "2.API.Services", "{D57F4C0C-9E1A-44C5-87D0-76DD28CFF088}"
 EndProject
@@ -12,6 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.API.Host", "3.API.Host", "{73A0229E-217F-45DF-AE4C-6FC9BF1FE344}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneInfo.API.Core", "PhoneInfo.API.Core\PhoneInfo.API.Core.csproj", "{EF32B2A5-6660-4142-9674-BC7689A992DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneInfo.API.Services.User", "PhoneInfo.API.Services.User\PhoneInfo.API.Services.User.csproj", "{2D545ADE-14D8-4CA6-9E57-AB2CB9478173}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneInfo.API.Services.Product", "PhoneInfo.API.Services.Product\PhoneInfo.API.Services.Product.csproj", "{292A047D-014D-4B4E-84BF-060B0A01E2F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +35,14 @@ Global
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF32B2A5-6660-4142-9674-BC7689A992DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +50,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{99B7FA2F-EB4E-4ABE-AAAC-C520E346451A} = {73A0229E-217F-45DF-AE4C-6FC9BF1FE344}
 		{EF32B2A5-6660-4142-9674-BC7689A992DF} = {36BFEE5B-27FF-4461-92B3-44963C3B1624}
+		{2D545ADE-14D8-4CA6-9E57-AB2CB9478173} = {D57F4C0C-9E1A-44C5-87D0-76DD28CFF088}
+		{292A047D-014D-4B4E-84BF-060B0A01E2F6} = {D57F4C0C-9E1A-44C5-87D0-76DD28CFF088}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F2F5049-2DE2-41AD-BD42-F817598DEB95}
