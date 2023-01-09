@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using PhoneInfo.API.Core.Bases;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +27,9 @@ namespace PhoneInfo.API.Core.Middlewares
 				}
 			}
 
-			//context.Response.ContentType = "application/json";
-			//context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-			//await context.Response.WriteAsync(JsonConvert.SerializeObject(new BaseResponseModel(context.Response.StatusCode, "Invalid token or token is expired", null)));
+			context.Response.ContentType = "application/json";
+			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+			await context.Response.WriteAsync(JsonConvert.SerializeObject(new BaseResponseModel(context.Response.StatusCode, "Invalid token or token is expired", null)));
 		}
 	}
 }
