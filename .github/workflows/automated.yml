@@ -1,39 +1,9 @@
 name: Restore, build and test
 
-# on:
-#   push:
-#     branches:
-#       - "main"
-
-# jobs:
-#   build-and-test:
-#     runs-on: ubuntu-20.04
-    
-#     steps:
-#       - name: Setup .NET Core SDK
-#         uses: actions/setup-dotnet@v3.0.3
-#         with:
-#           dotnet-version: 6.0
-#       - name: Checkout
-#         uses: actions/checkout@v3.3.0
-#       - name: Build
-#         working-directory: .
-#         run:
-#           dotnet build PhoneInfo.API.sln
-#       - name: Test
-#         run: 
-#           dotnet test PhoneInfo.API.sln
-#       - name: SonarCloud Scan
-#         uses: 
-#           SonarSource/sonarcloud-github-action@v1.8
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
 on:
   push:
     branches:
-      - main
+        ["main", "dev"]
 jobs:
   build:
     name: Build and analyze
