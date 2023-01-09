@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneInfo.API.Core;
 using PhoneInfo.API.Core.Middlewares;
+using PhoneInfo.API.Services.Product;
 
 namespace PhoneInfo.API
 {
@@ -27,8 +28,15 @@ namespace PhoneInfo.API
 			services.AddJwtServiceLayer(Configuration);
 			services.AddSwaggerServiceLayer();
 			services.AddSessionServiceLayer();
+			services.AddHttpServiceLayer();
 
 			#endregion Core
+
+			#region Services
+
+			services.AddProductServiceLayer();
+
+			#endregion Services
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,8 +56,8 @@ namespace PhoneInfo.API
 
 			#region Middewares
 
-			app.UseMiddleware<TokenMiddleware>();
 			app.UseMiddleware<MainMiddleware>();
+			//app.UseMiddleware<TokenMiddleware>();
 
 			#endregion Middewares
 
