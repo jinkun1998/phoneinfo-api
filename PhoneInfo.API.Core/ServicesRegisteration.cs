@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PhoneInfo.API.Core.HttpRequest;
@@ -89,13 +90,13 @@ namespace PhoneInfo.API.Core
 			});
 		}
 
-		public static void UseSwaggerService(this IApplicationBuilder app, IWebHostEnvironment env)
+		public static void UseSwaggerService(this IApplicationBuilder app, IHostEnvironment env)
 		{
-			//if (env.IsDevelopment())
-			//{
-			app.UseSwagger();
-			app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Phone Info API V1"));
-			//}
+			if (env.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Phone Info API V1"));
+			}
 		}
 
 		#endregion Swagger
