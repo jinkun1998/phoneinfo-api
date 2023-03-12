@@ -3,68 +3,67 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PhoneInfo.API.Core;
-using PhoneInfo.API.Core.Middlewares;
-using PhoneInfo.API.Services.Product;
+using PhoneInfo.API.Extensions;
+using PhoneInfo.API.Middlewares;
 
 namespace PhoneInfo.API
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddControllers();
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddSessionServiceLayer();
 
-			#region Core
+            #region Domain
 
-			services.AddJwtServiceLayer(Configuration);
-			services.AddSwaggerServiceLayer();
-			services.AddSessionServiceLayer();
-			services.AddHttpServiceLayer();
+            services.AddJwtServiceLayer(Configuration);
+            services.AddSwaggerServiceLayer();
+            services.AddHttpServiceLayer();
 
-			#endregion Core
+            #endregion Domain
 
-			#region Services
+            #region Services
 
-			services.AddProductServiceLayer();
+            services.AddCatalogService();
 
-			#endregion Services
-		}
+            #endregion Services
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.UseHttpsRedirection();
-			app.UseRouting();
-			app.UseJwtService();
-			app.UseSwaggerService(env);
-			app.UseAuthorization();
-			app.UseSession();
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseJwtService();
+            app.UseSwaggerService(env);
+            app.UseAuthorization();
+            app.UseSession();
 
-			#region Middewares
+            #region Middewares
 
-			app.UseMiddleware<MainMiddleware>();
-			//app.UseMiddleware<TokenMiddleware>();
+            app.UseMiddleware<MainMiddleware>();
+            //app.UseMiddleware<TokenMiddleware>();
 
-			#endregion Middewares
+            #endregion Middewares
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
-	}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
 }

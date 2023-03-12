@@ -5,9 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PhoneInfo.API.Core\PhoneInfo.API.Core.csproj" />
-    <ProjectReference Include="..\PhoneInfo.API.Services.Product\PhoneInfo.API.Services.Product.csproj" />
-    <ProjectReference Include="..\PhoneInfo.API.Services.User\PhoneInfo.API.Services.User.csproj" />
+    <ProjectReference Include="..\PhoneInfo.API.Application\PhoneInfo.API.Application.csproj" />
+    <ProjectReference Include="..\PhoneInfo.API.Core\PhoneInfo.API.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
   </ItemGroup>
 
 
