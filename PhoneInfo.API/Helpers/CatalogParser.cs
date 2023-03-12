@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -128,7 +129,7 @@ namespace PhoneInfo.API.Helpers
                 .SelectMany(node => node?.SelectNodes("table/tr/td/a")) // finding nodes with path table > tr > td > a
                 .Select(el => new
                 {
-                    name = Regex.Replace(el?.InnerText?.Replace(" devices", string.Empty), @"[^\D]", string.Empty),
+                    name = Regex.Replace(el?.InnerText?.Replace(" devices", string.Empty), @"[^\D]", string.Empty, RegexOptions.NonBacktracking),
                     devices = el?.SelectSingleNode("span")?.InnerText?.Replace(" devices", string.Empty),
                     url = el?.GetAttributes("href")?.Select(u => u?.Value?.Replace(".php", string.Empty))?.FirstOrDefault()
                 });
