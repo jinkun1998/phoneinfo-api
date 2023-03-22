@@ -22,6 +22,7 @@ namespace PhoneInfo.API
         {
             services.AddControllers();
             services.AddSessionServiceLayer();
+            services.AddApiVersioningLayer();
 
             #region Domain
 
@@ -34,9 +35,10 @@ namespace PhoneInfo.API
             #region Services
 
             services.AddCatalogService();
+			services.AddDealService();
 
-            #endregion Services
-        }
+			#endregion Services
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

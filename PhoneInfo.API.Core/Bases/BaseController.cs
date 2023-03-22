@@ -5,27 +5,33 @@ using System.Text;
 
 namespace PhoneInfo.API.Domain.Bases
 {
-    [ApiController]
-    public class BaseController : ControllerBase
-    {
-        protected IActionResult ResponseOK(object data = null, string message = "")
-        {
-            return Ok(new BaseResponseModel(200, message, data));
-        }
+	[ApiController]
+	public class BaseController : ControllerBase
+	{
+		private readonly IDistributedCache Cache;
 
-        protected IActionResult ResponseBadRequest(object data = null, string message = "", int errorCode = 400)
-        {
-            return Ok(new BaseResponseModel(errorCode, message, data));
-        }
+		public BaseController(IDistributedCache cache)
+		{
+			Cache = cache;
+		}
+		protected IActionResult ResponseOK(object data = null, string message = "")
+		{
+			return Ok(new BaseResponseModel(200, message, data));
+		}
 
-        protected void SetCacheToken(IDistributedCache cache, JwtResponseModel jwtResponseModel)
-        {
-            cache.SetString($"Token_{jwtResponseModel.AccessToken}", jwtResponseModel.RefreshToken);
-        }
+		protected IActionResult ResponseBadRequest(object data = null, string message = "", int errorCode = 400)
+		{
+			return Ok(new BaseResponseModel(errorCode, message, data));
+		}
 
-        protected string GetRefreshToken(IDistributedCache cache, string accessToken)
-        {
-            return cache.GetString($"Token_{accessToken}");
-        }
-    }
+		protected void SetCacheToken(JwtResponseModel jwtResponseModel)
+		{
+			Cache.SetString($"Token_{jwtResponseModel.AccessToken}", jwtResponseModel.RefreshToken);
+		}
+
+		protected string GetRefreshToken(string accessToken)
+		{
+			return Cache.GetString($"Token_{accessToken}");
+		}
+	}
 }
