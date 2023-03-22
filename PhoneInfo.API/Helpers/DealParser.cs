@@ -59,6 +59,14 @@ namespace PhoneInfo.API.Helpers
 					.Where(n => n.HasClass("history"))
 					.SelectMany(n => n.ChildNodes
 						.Where(nn => nn.HasClass("row")));
+
+				response.deal = new
+				{
+					memory=,
+					storeImg =,
+					price=,
+					discount=
+				};
 			}
 
 			return responses;
