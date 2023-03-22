@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace PhoneInfo.API.Helpers
 {
@@ -45,9 +46,9 @@ namespace PhoneInfo.API.Helpers
                 .Select(node => new
                 {
                     name = node?.SelectSingleNode("strong/span")?.InnerText, // get text in node strong > span
-                    img = node?.SelectSingleNode("img")?.GetAttributes("src")?.FirstOrDefault().Value, // get text in attr "src" of img element
-                    url = node?.GetAttributes("href")?.Select(u => u?.Value?.Replace(".php", string.Empty))?.FirstOrDefault(), // get text in attr "href" and replace the extension ".php" to "" of a element
-                    description = node?.SelectSingleNode("img")?.GetAttributes("title")?.FirstOrDefault()?.Value // get text in attr "title" of img element
+                    img = node?.SelectSingleNode("img")?.Attributes["src"]?.Value, // get text in attr "src" of img element
+                    url = node?.Attributes["href"]?.Value?.Replace(".php", string.Empty), // get text in attr "href" and replace the extension ".php" to "" of a element
+                    description = node?.SelectSingleNode("img")?.Attributes["title"]?.Value // get text in attr "title" of img element
                 });
 
             List<object> pageDatas = new();
@@ -73,7 +74,7 @@ namespace PhoneInfo.API.Helpers
                 if (page.Name != "strong")
                 {
                     // this is not current page
-                    pageData.url = page?.GetAttributes("href")?.Select(u => u?.Value?.Replace(".php", string.Empty));
+                    pageData.url = page?.Attributes["href"].Value?.Replace(".php", string.Empty);
                 }
                 else
                 {
@@ -91,20 +92,20 @@ namespace PhoneInfo.API.Helpers
             // get next page url
             var nextPage = pages?
                 .Where(page => page.HasClass("pages-next"))
-                .Select(page => page.GetAttributes("href")?.FirstOrDefault()?.Value)
+                .Select(page => page.Attributes["href"]?.Value)
                 .FirstOrDefault();
             if (nextPage is not null)
             {
                 if (!(nextPage.Contains('#')))
                 {
-                    data.Next = nextPage.Replace(".php", string.Empty);
+                    data.next = nextPage.Replace(".php", string.Empty);
                 }
             }
 
             // get previous page url
             var prevPage = pages?
                 .Where(page => page.HasClass("pages-next-prev"))
-                .Select(page => page?.GetAttributes("href")?.FirstOrDefault()?.Value)
+                .Select(page => page?.Attributes["href"]?.Value)
                 .FirstOrDefault();
             if (prevPage is not null)
             {
@@ -131,7 +132,7 @@ namespace PhoneInfo.API.Helpers
                 {
                     name = Regex.Replace(el?.InnerText?.Replace(" devices", string.Empty), @"[^\D]", string.Empty, RegexOptions.NonBacktracking),
                     devices = el?.SelectSingleNode("span")?.InnerText?.Replace(" devices", string.Empty),
-                    url = el?.GetAttributes("href")?.Select(u => u?.Value?.Replace(".php", string.Empty))?.FirstOrDefault()
+                    url = el?.Attributes["href"]?.Value?.Replace(".php", string.Empty)
                 });
         }
 
@@ -142,9 +143,9 @@ namespace PhoneInfo.API.Helpers
             return doc
                 .DocumentNode
                 .Descendants()
-                .SelectMany(descendant => descendant.GetAttributes("data-spec"))
+                .Select(descendant => descendant.Attributes["data-spec"])
                 .Where(descendant => descendant != null)
-                .ToDictionary(descendant => descendant?.Value, descendant => descendant?.OwnerNode?.InnerText);
+                .ToDictionary(descendant => descendant?.Value, descendant => Regex.Replace(HttpUtility.HtmlDecode(descendant?.OwnerNode?.InnerText), @"[\n\r]+", string.Empty, RegexOptions.NonBacktracking));
         }
     }
 }
