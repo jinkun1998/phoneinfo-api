@@ -49,7 +49,7 @@ namespace PhoneInfo.API.Helpers
 					.SelectSingleNode("a")?.Attributes["href"]?.Value;
 				response.title = rowClass
 					.SelectSingleNode("div/div/h3")?.InnerText;
-				response.link = rowClass
+				response.id = rowClass
 					.SelectSingleNode("div/div/a")?.Attributes["href"]?.Value;
 				response.description = rowClass
 					.SelectSingleNode("div/p/a")?.InnerText;
@@ -60,12 +60,14 @@ namespace PhoneInfo.API.Helpers
 					.FirstOrDefault()
 					.ChildNodes;
 
+				dynamic priceData = CommonHelper.GetPrice(HttpUtility.HtmlDecode(dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText));
 				response.deal = new
 				{
 					memory = dealClass?.Where(n => n.HasClass("memory"))?.FirstOrDefault()?.InnerText,
 					storeImage = dealClass?.Where(n => n.HasClass("store"))?.FirstOrDefault().SelectSingleNode("img")?.Attributes["src"]?.Value,
-					price = HttpUtility.HtmlDecode(dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText),
-					discount = dealClass?.Where(n => n.HasClass("discount"))?.FirstOrDefault()?.InnerText
+					priceData.price,
+					priceData.currency,
+					discount = float.Parse(dealClass?.Where(n => n.HasClass("discount"))?.FirstOrDefault()?.InnerText)
 				};
 
 				IEnumerable<HtmlNode> historyStatsClass = device
@@ -97,7 +99,9 @@ namespace PhoneInfo.API.Helpers
 				}
 				else
 				{
-					histories[i / 2].price = HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText);
+					dynamic priceData = HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText);
+					histories[i / 2].price = priceData.price;
+					histories[i / 2].currency = priceData.currency;
 				}
 			}
 			return histories;
