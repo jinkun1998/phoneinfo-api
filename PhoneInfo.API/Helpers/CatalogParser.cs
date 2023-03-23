@@ -92,12 +92,9 @@ namespace PhoneInfo.API.Helpers
 				.Where(page => page.HasClass("pages-next"))
 				.Select(page => page.Attributes["href"]?.Value)
 				.FirstOrDefault();
-			if (nextPage is not null)
+			if (nextPage is not null && !nextPage.Contains('#'))
 			{
-				if (!(nextPage.Contains('#')))
-				{
-					data.next = nextPage.Replace(".php", string.Empty);
-				}
+				data.next = nextPage.Replace(".php", string.Empty);
 			}
 
 			// get previous page url
@@ -105,12 +102,9 @@ namespace PhoneInfo.API.Helpers
 				.Where(page => page.HasClass("pages-next-prev"))
 				.Select(page => page?.Attributes["href"]?.Value)
 				.FirstOrDefault();
-			if (prevPage is not null)
+			if (prevPage is not null && !prevPage.Contains('#'))
 			{
-				if (!(prevPage.Contains('#')))
-				{
-					data.prev = prevPage.Replace(".php", string.Empty);
-				}
+				data.prev = prevPage.Replace(".php", string.Empty);
 			}
 
 			return data;

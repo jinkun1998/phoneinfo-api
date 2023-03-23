@@ -49,7 +49,6 @@ namespace PhoneInfo.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseJwtService();
             app.UseSwaggerService(env);
@@ -59,7 +58,6 @@ namespace PhoneInfo.API
             #region Middewares
 
             app.UseMiddleware<MainMiddleware>();
-            //app.UseMiddleware<TokenMiddleware>();
 
             #endregion Middewares
 
