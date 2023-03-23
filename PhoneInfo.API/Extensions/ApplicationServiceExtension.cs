@@ -9,6 +9,7 @@ namespace PhoneInfo.API.Extensions
 		#region Services
 		public static void AddCatalogService(this IServiceCollection services) => services.AddScoped<ICatalogService, CatalogService>();
 		public static void AddDealService(this IServiceCollection services) => services.AddScoped<IDealService, DealService>();
+		public static void AddGlossaryService(this IServiceCollection services) => services.AddScoped<IGlossaryService, GlossaryService>();
 		#endregion
 	}
 }

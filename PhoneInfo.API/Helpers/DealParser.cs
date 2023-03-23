@@ -9,15 +9,15 @@ namespace PhoneInfo.API.Helpers
 {
 	public static class DealParser
 	{
-		public static class Type
+		public enum DealType
 		{
-			public const string Deals = "DEALS";
+			DEALS
 		}
-		public static object Parse(string html, string type)
+		public static object Parse(string html, DealType type)
 		{
 			return type switch
 			{
-				Type.Deals => Deals(html),
+				DealType.DEALS => Deals(html),
 				_ => string.Empty
 			};
 		}
@@ -29,7 +29,7 @@ namespace PhoneInfo.API.Helpers
 			HtmlDocument doc = new();
 			doc.LoadHtml(html);
 
-			var devicesClass = doc
+			IEnumerable<HtmlNode> devicesClass = doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.HasClass("pricecut"));
@@ -38,7 +38,7 @@ namespace PhoneInfo.API.Helpers
 			{
 				dynamic response = new ExpandoObject();
 
-				var rowClass = device
+				HtmlNode rowClass = device
 					.ChildNodes?
 					.Where(n => n.HasClass("row"))?
 					.FirstOrDefault();
@@ -54,7 +54,7 @@ namespace PhoneInfo.API.Helpers
 				response.description = rowClass
 					.SelectSingleNode("div/p/a")?.InnerText;
 
-				var dealClass = rowClass
+				IEnumerable<HtmlNode> dealClass = rowClass
 					.Descendants()?
 					.Where(n => n.HasClass("deal"))?
 					.FirstOrDefault()
@@ -63,8 +63,8 @@ namespace PhoneInfo.API.Helpers
 				response.deal = new
 				{
 					memory = dealClass?.Where(n => n.HasClass("memory"))?.FirstOrDefault()?.InnerText,
-                    storeImage = dealClass?.Where(n => n.HasClass("store"))?.FirstOrDefault().SelectSingleNode("img")?.Attributes["src"]?.Value,
-					price = HttpUtility.HtmlDecode( dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText),
+					storeImage = dealClass?.Where(n => n.HasClass("store"))?.FirstOrDefault().SelectSingleNode("img")?.Attributes["src"]?.Value,
+					price = HttpUtility.HtmlDecode(dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText),
 					discount = dealClass?.Where(n => n.HasClass("discount"))?.FirstOrDefault()?.InnerText
 				};
 
@@ -78,18 +78,18 @@ namespace PhoneInfo.API.Helpers
 
 				response.history = GetHistoryStats(historyStatsClass);
 
-                responses.Add(response);
+				responses.Add(response);
 			}
 
 			return responses;
 		}
 
-        private static IEnumerable<object> GetHistoryStats(IEnumerable<HtmlNode> historyStatsClass)
-        {
+		private static IEnumerable<object> GetHistoryStats(IEnumerable<HtmlNode> historyStatsClass)
+		{
 			List<dynamic> histories = new();
 			for (int i = 0; i < historyStatsClass?.Count(); i++)
 			{
-                if (i % 2 == 0)
+				if (i % 2 == 0)
 				{
 					dynamic index = new ExpandoObject();
 					index.time = historyStatsClass?.ElementAtOrDefault(i)?.InnerText;
@@ -97,14 +97,10 @@ namespace PhoneInfo.API.Helpers
 				}
 				else
 				{
-					var index = histories[i / 2];
-					if (index is not null)
-					{
-						index.price = HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText);
-                    }
-                }
+					histories[i / 2].price = HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText);
+				}
 			}
 			return histories;
-        }
-    }
+		}
+	}
 }

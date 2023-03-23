@@ -28,25 +28,25 @@ namespace PhoneInfo.API.Controllers
 			(string html, HttpStatusCode statusCode) = await CatalogService.GetBrandsAsync();
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(CatalogParser.Parse(html, CatalogParser.Type.BRANCHS));
+				ResponseOK(CatalogParser.Parse(html, CatalogParser.CatalogType.BRANCHS));
 		}
 
 		[HttpGet("productByBrand")]
-		public async Task<IActionResult> GetProductByBrand(string brand)
+		public async Task<IActionResult> GetProductByBrand([FromQuery] string brand)
 		{
 			(string html, HttpStatusCode statusCode) = await CatalogService.GetProductByBrandAsync(brand);
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(CatalogParser.Parse(html, CatalogParser.Type.BRANCH));
+				ResponseOK(CatalogParser.Parse(html, CatalogParser.CatalogType.BRANCH));
 		}
 
 		[HttpGet("productDetail")]
-		public async Task<IActionResult> GetProductDetail(string product)
+		public async Task<IActionResult> GetProductDetail([FromQuery] string product)
 		{
 			(string html, HttpStatusCode statusCode) = await CatalogService.GetProductDetailAsync(product);
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(CatalogParser.Parse(html, CatalogParser.Type.DEVICE));
+				ResponseOK(CatalogParser.Parse(html, CatalogParser.CatalogType.DEVICE));
 		}
 	}
 }

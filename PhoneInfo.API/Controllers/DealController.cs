@@ -29,7 +29,7 @@ namespace PhoneInfo.API.Controllers
 			(string html, HttpStatusCode statusCode) = await DealService.GetDealsAsync();
 			return statusCode != HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(DealParser.Parse(html, DealParser.Type.Deals));
+				ResponseOK(DealParser.Parse(html, DealParser.DealType.DEALS));
 		}
 	}
 }
