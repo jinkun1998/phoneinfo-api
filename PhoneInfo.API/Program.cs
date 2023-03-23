@@ -14,7 +14,10 @@ namespace PhoneInfo.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseKestrel();
+                    webBuilder.UseKestrel(options =>
+                    {
+                        options.ListenAnyIP(5001);
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

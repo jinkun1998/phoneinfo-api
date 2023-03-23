@@ -48,13 +48,13 @@ namespace PhoneInfo.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseJwtService();
             app.UseSwaggerService(env);
             app.UseAuthorization();
             app.UseSession();
-
+            
             #region Middewares
 
             app.UseMiddleware<MainMiddleware>();
