@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PhoneInfo.API.Application.Services;
-using System.Runtime.CompilerServices;
+using PhoneInfo.API.Domain.Interfaces;
 
 namespace PhoneInfo.API.Extensions
 {
