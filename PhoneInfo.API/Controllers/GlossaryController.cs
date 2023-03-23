@@ -1,9 +1,8 @@
-﻿using HtmlAgilityPack;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
-using PhoneInfo.API.Application.Services;
 using PhoneInfo.API.Domain.Bases;
+using PhoneInfo.API.Domain.Interfaces;
 using PhoneInfo.API.Helpers;
 using System.Net;
 using System.Threading.Tasks;
