@@ -86,7 +86,7 @@ namespace PhoneInfo.API.Helpers
 					foreach (HtmlNode term in terms)
 					{
 						dynamic index = new ExpandoObject();
-						index.link = term?.Attributes["href"]?.Value.Replace("glossary.php3?term=", string.Empty);
+						index.id = term?.Attributes["href"]?.Value.Replace("glossary.php3?term=", string.Empty);
 						index.name = term?.InnerText;
 						responses[i / 2]?.list.Add(index);
 					}
