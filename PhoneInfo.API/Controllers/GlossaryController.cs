@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using PhoneInfo.API.Domain.Bases;
 using PhoneInfo.API.Domain.Interfaces;
 using PhoneInfo.API.Helpers;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 

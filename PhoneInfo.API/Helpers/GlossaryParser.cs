@@ -27,13 +27,14 @@ namespace PhoneInfo.API.Helpers
 			HtmlDocument doc = new();
 			doc.LoadHtml(html);
 
+			// get body (#body)
 			HtmlNode body = doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.Id == "body")?
 				.FirstOrDefault();
 
-
+			// #body > .review-header > .article-hgroup > h1
 			string title = body
 				.Descendants()?
 				.Where(c => c.HasClass("review-header"))?
@@ -44,6 +45,7 @@ namespace PhoneInfo.API.Helpers
 				.SelectSingleNode("h1")?
 				.InnerText;
 
+			// #body > .st-text
 			string text = body
 				.Descendants()?
 				.FirstOrDefault(c => c.HasClass("st-text") && c.HasChildNodes)?
@@ -91,7 +93,6 @@ namespace PhoneInfo.API.Helpers
 					}
 				}
 			}
-
 			return responses;
 		}
 	}

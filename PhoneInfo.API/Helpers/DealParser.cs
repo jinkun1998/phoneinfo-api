@@ -23,66 +23,78 @@ namespace PhoneInfo.API.Helpers
 
 		static object Deals(string html)
 		{
-			List<object> responses = new();
-
+			// create doc
 			HtmlDocument doc = new();
+			// load doc
 			doc.LoadHtml(html);
 
+			// get all node has class = 'pricecut'
 			IEnumerable<HtmlNode> devicesClass = doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.HasClass("pricecut"));
 
-			foreach (HtmlNode device in devicesClass)
-			{
-				dynamic response = new ExpandoObject();
-
-				HtmlNode rowClass = device
-					.ChildNodes?
-					.Where(n => n.HasClass("row"))?
-					.FirstOrDefault();
-
-				response.image = rowClass
-					.SelectSingleNode("a/img")?.Attributes["src"]?.Value;
-				response.url = rowClass
-					.SelectSingleNode("a")?.Attributes["href"]?.Value;
-				response.title = rowClass
-					.SelectSingleNode("div/div/h3")?.InnerText;
-				response.id = rowClass
-					.SelectSingleNode("div/div/a")?.Attributes["href"]?.Value;
-				response.description = rowClass
-					.SelectSingleNode("div/p/a")?.InnerText;
-
-				IEnumerable<HtmlNode> dealClass = rowClass
-					.Descendants()?
-					.Where(n => n.HasClass("deal"))?
-					.FirstOrDefault()
-					.ChildNodes;
-
-				dynamic priceData = CommonHelper.GetPrice(HttpUtility.HtmlDecode(dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText));
-				response.deal = new
+			return devicesClass
+				.Select(device =>
 				{
-					memory = dealClass?.Where(n => n.HasClass("memory"))?.FirstOrDefault()?.InnerText,
-					storeImage = dealClass?.Where(n => n.HasClass("store"))?.FirstOrDefault().SelectSingleNode("img")?.Attributes["src"]?.Value,
-					priceData.price,
-					priceData.currency,
-					discount = float.Parse(dealClass?.Where(n => n.HasClass("discount"))?.FirstOrDefault()?.InnerText)
-				};
+					dynamic response = new ExpandoObject();
 
-				IEnumerable<HtmlNode> historyStatsClass = device
-					.ChildNodes?
-					.Where(n => n.HasClass("history"))?
-					.SelectMany(n => n.Descendants()?
-						.Where(nn => nn.HasClass("stats"))
-						.SelectMany(nn => nn.ChildNodes))
-					.Where(n => n.Name != "#text");
+					// get node with class 'row', which is child of device node
+					HtmlNode rowClass = device
+						.ChildNodes?
+						.Where(n => n.HasClass("row"))?
+						.FirstOrDefault();
 
-				response.history = GetHistoryStats(historyStatsClass);
+					// get src attr from img node (.row > a > img)
+					response.image = rowClass
+						.SelectSingleNode("a/img")?.Attributes["src"]?.Value;
+					// get href attr from a node
+					response.url = rowClass
+						.SelectSingleNode("a")?.Attributes["href"]?.Value;
+					// get text of h3 node (.row > div > div > h3div > div > h3)
+					response.title = rowClass
+						.SelectSingleNode("div/div/h3")?.InnerText;
+					// get href attr from a node (row >div > div > a)
+					response.id = rowClass
+						.SelectSingleNode("div/div/a")?.Attributes["href"]?.Value;
+					// get text of a node (.row > div > p > a)
+					response.description = rowClass
+						.SelectSingleNode("div/p/a")?.InnerText;
 
-				responses.Add(response);
-			}
+					// get all child node of node has 'deal' class (.row > .deal)
+					IEnumerable<HtmlNode> dealClass = rowClass
+						.Descendants()?
+						.Where(n => n.HasClass("deal"))?
+						.FirstOrDefault()
+						.ChildNodes;
 
-			return responses;
+					// get price text from node has 'price' class (.row > .deal > .price)
+					dynamic priceData = CommonHelper.GetPrice(HttpUtility.HtmlDecode(dealClass?.Where(n => n.HasClass("price"))?.FirstOrDefault()?.InnerText));
+					response.deal = new
+					{
+						// .deal > .memory
+						memory = dealClass?.Where(n => n.HasClass("memory"))?.FirstOrDefault()?.InnerText,
+						// .deal > .store > img
+						storeImage = dealClass?.Where(n => n.HasClass("store"))?.FirstOrDefault()?.SelectSingleNode("img")?.Attributes["src"]?.Value,
+						priceData.price,
+						priceData.currency,
+						// .deal > .discount
+						discount = float.Parse(dealClass?.Where(n => n.HasClass("discount"))?.FirstOrDefault()?.InnerText)
+					};
+
+					// .pricecut > .stats
+					IEnumerable<HtmlNode> historyStatsClass = device
+						.ChildNodes?
+						.Where(n => n.HasClass("history"))?
+						.SelectMany(n => n.Descendants()?
+							.Where(nn => nn.HasClass("stats"))
+							.SelectMany(nn => nn.ChildNodes))
+						.Where(n => n.Name != "#text");
+
+					response.history = GetHistoryStats(historyStatsClass);
+
+					return response;
+				});
 		}
 
 		private static IEnumerable<object> GetHistoryStats(IEnumerable<HtmlNode> historyStatsClass)
@@ -98,7 +110,7 @@ namespace PhoneInfo.API.Helpers
 				}
 				else
 				{
-					dynamic priceData = HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText);
+					dynamic priceData = CommonHelper.GetPrice(HttpUtility.HtmlDecode(historyStatsClass?.ElementAtOrDefault(i)?.InnerText));
 					histories[i / 2].price = priceData.price;
 					histories[i / 2].currency = priceData.currency;
 				}
