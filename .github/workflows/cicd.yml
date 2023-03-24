@@ -6,7 +6,7 @@ on:
         ["main", "dev"]
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze with CodeQL
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -46,7 +46,7 @@ jobs:
   
   build:
     needs: analyze
-    name: Build and analyze
+    name: Build and Scan Sonar
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
