@@ -27,13 +27,14 @@ namespace PhoneInfo.API.Helpers
 			HtmlDocument doc = new();
 			doc.LoadHtml(html);
 
+			// get body (#body)
 			HtmlNode body = doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.Id == "body")?
 				.FirstOrDefault();
 
-
+			// #body > .review-header > .article-hgroup > h1
 			string title = body
 				.Descendants()?
 				.Where(c => c.HasClass("review-header"))?
@@ -44,6 +45,7 @@ namespace PhoneInfo.API.Helpers
 				.SelectSingleNode("h1")?
 				.InnerText;
 
+			// #body > .st-text
 			string text = body
 				.Descendants()?
 				.FirstOrDefault(c => c.HasClass("st-text") && c.HasChildNodes)?
@@ -54,45 +56,42 @@ namespace PhoneInfo.API.Helpers
 
 		private static object Glossaries(string html)
 		{
-			List<dynamic> responses = new();
-
 			HtmlDocument doc = new();
 			doc.LoadHtml(html);
 
-			IEnumerable<HtmlNode> termsClass = doc
+			// .st-text
+			return doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.HasClass("st-text"))?
 				.SelectMany(d => d.ChildNodes)
-				.Where(d => d.Name != "#text");
-
-			for (int i = 0; i < termsClass?.Count(); i++)
-			{
-				if (i % 2 == 0)
+				.Where(d => d.Name != "#text")
+				.SelectMany((d, i) =>
 				{
-					dynamic index = new ExpandoObject();
-					index.letter = termsClass?.ElementAtOrDefault(i)?.InnerText;
-					index.list = new List<dynamic>();
-					responses.Add(index);
-				}
-				else
-				{
-					IEnumerable<HtmlNode> terms = termsClass?
-						.ElementAtOrDefault(i)?
-						.ChildNodes?
-						.Where(c => c.Name == "a");
-
-					foreach (HtmlNode term in terms)
+					List<dynamic> responses = new();
+					if (i % 2 == 0)
 					{
 						dynamic index = new ExpandoObject();
-						index.id = term?.Attributes["href"]?.Value.Replace("glossary.php3?term=", string.Empty);
-						index.name = term?.InnerText;
-						responses[i / 2]?.list.Add(index);
+						index.letter = d?.InnerText;
+						index.list = new List<dynamic>();
+						responses.Add(index);
 					}
-				}
-			}
+					else
+					{
+						IEnumerable<HtmlNode> terms = d?
+							.ChildNodes?
+							.Where(c => c.Name == "a");
 
-			return responses;
+						foreach (HtmlNode term in terms)
+						{
+							dynamic index = new ExpandoObject();
+							index.id = term?.Attributes["href"]?.Value.Replace("glossary.php3?term=", string.Empty);
+							index.name = term?.InnerText;
+							responses[i / 2]?.list.Add(index);
+						}
+					}
+					return responses;
+				});
 		}
 	}
 }
