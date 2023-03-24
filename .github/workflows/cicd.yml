@@ -53,7 +53,7 @@ jobs:
         uses: actions/setup-java@v3.10.0
         with:
           java-version: 1.11
-          java-package: jdk
+          distribution: microsoft
       - uses: actions/checkout@v3.4.0
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
