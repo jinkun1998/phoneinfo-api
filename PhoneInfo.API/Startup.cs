@@ -8,63 +8,63 @@ using PhoneInfo.API.Middlewares;
 
 namespace PhoneInfo.API
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddSessionServiceLayer();
-            services.AddApiVersioningLayer();
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddControllers();
+			services.AddSessionServiceLayer();
+			services.AddApiVersioningLayer();
 
-            #region Domain
+			#region Domain
 
-            services.AddJwtServiceLayer(Configuration);
-            services.AddSwaggerServiceLayer();
-            services.AddHttpServiceLayer();
+			services.AddJwtServiceLayer(Configuration);
+			services.AddSwaggerServiceLayer();
+			services.AddHttpServiceLayer();
 
-            #endregion Domain
+			#endregion Domain
 
-            #region Services
+			#region Services
 
-            services.AddCatalogService();
+			services.AddCatalogService();
 			services.AddDealService();
-            services.AddGlossaryService();
+			services.AddGlossaryService();
 
 			#endregion Services
 		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseRouting();
-            app.UseJwtService();
-            app.UseSwaggerService(env);
-            app.UseAuthorization();
-            app.UseSession();
-            
-            #region Middewares
+			app.UseRouting();
+			app.UseJwtService();
+			app.UseSwaggerService(env);
+			app.UseAuthorization();
+			app.UseSession();
 
-            app.UseMiddleware<MainMiddleware>();
+			#region Middewares
 
-            #endregion Middewares
+			app.UseMiddleware<MainMiddleware>();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			#endregion Middewares
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+		}
+	}
 }
