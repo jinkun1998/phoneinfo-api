@@ -1,0 +1,9 @@
+global using NUnit.Framework;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using PhoneInfo.API.Application.Services;
+global using PhoneInfo.API.Controllers;
+global using PhoneInfo.API.Domain.Interfaces;
+global using PhoneInfo.API.Extensions;
+global using PhoneInfo.API.Helpers;
+global using System.Net;
