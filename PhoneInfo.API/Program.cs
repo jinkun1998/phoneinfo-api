@@ -16,7 +16,7 @@ namespace PhoneInfo.API
 				{
 					webBuilder.UseKestrel(options =>
 					{
-						options.ListenAnyIP(5001);
+						options.ListenAnyIP(9001);
 					});
 					webBuilder.UseStartup<Startup>();
 				});
