@@ -9,15 +9,15 @@ namespace PhoneInfo.API.Helpers
 	{
 		public enum GlossaryType
 		{
-			LIST, TERM
+			List, Term
 		}
 
 		public static object Parse(string html, GlossaryType type)
 		{
 			return type switch
 			{
-				GlossaryType.LIST => Glossaries(html),
-				GlossaryType.TERM => Term(html),
+				GlossaryType.List => Glossaries(html),
+				GlossaryType.Term => Term(html),
 				_ => string.Empty
 			};
 		}

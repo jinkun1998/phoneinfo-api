@@ -1,7 +1,10 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace PhoneInfo.API.Helpers
@@ -10,15 +13,69 @@ namespace PhoneInfo.API.Helpers
 	{
 		public enum DealType
 		{
-			DEALS
+			Deals, Top10DailyInterest, Top10ByFans
 		}
 		public static object Parse(string html, DealType type)
 		{
 			return type switch
 			{
-				DealType.DEALS => Deals(html),
+				DealType.Deals => Deals(html),
+				DealType.Top10DailyInterest => GetRank(html, "green"),
+				DealType.Top10ByFans => GetRank(html, "blue"),
 				_ => string.Empty
 			};
+		}
+
+		private static object GetRank(string html, string className)
+		{
+			HtmlDocument doc = new();
+			doc.LoadHtml(html);
+
+			//load category nodes (.sidebar.col.left > .module.module-rankings.s3 > .module-fit.{className})
+			HtmlNode category = doc
+				.DocumentNode
+				.Descendants()?
+				.Where(d => d.HasClass("sidebar") && d.HasClass("col") && d.HasClass("left")) // .sidebar.col.left
+				.SelectMany(d => d.ChildNodes)?
+				.Where(d => d.HasClass("module") && d.HasClass("module-rankings") && d.HasClass("s3"))? // .module.module-rankings.s3
+				.SelectMany(d => d.ChildNodes)?
+				.FirstOrDefault(n => n.HasClass("module-fit") && n.HasClass(className)); // module-fit.{className}
+
+			if (category != null)
+			{
+				// .module.module-rankings.s3 > h4
+				string categoryName = category?.ParentNode?.SelectSingleNode("h4")?.InnerText;
+				// module-fit.{className} > tbody > tr
+				IEnumerable<dynamic> ranks = category?
+					.SelectNodes("tbody/tr")? // tbody > tr
+					.Where(n => !Regex.IsMatch(n.InnerHtml, @"[\n\r]+", RegexOptions.NonBacktracking)) // just get non-empty nodes
+					.Select((tr, index) =>
+					{
+						// tr > td[headers='th3a']
+						string position = tr?.ChildNodes?.FirstOrDefault(c => c?.Attributes["headers"]?.Value == "th3a")?.InnerText?.Replace(".", "");
+						if (int.TryParse(position, out int order))
+						{
+							dynamic element = new ExpandoObject();
+							element.position = order;
+							element.name = tr?.SelectSingleNode("*/a/nobr")?.InnerText; // tr > * > a > nobr
+							element.id = tr?.SelectSingleNode("*/a")?.Attributes["href"]?.Value?.Replace(".php", string.Empty); //tr > * > a[href]
+							element.score = tr?
+							.ChildNodes?
+							.FirstOrDefault(c => c?.Attributes["headers"]?.Value == "th3c")? // tr > td[headers='th3c']
+							.InnerText?
+							.Replace(",", "");
+							return element;
+						}
+						return default;
+					});
+
+				return new
+				{
+					category = categoryName,
+					ranks
+				};
+			}
+			return default;
 		}
 
 		static object Deals(string html)

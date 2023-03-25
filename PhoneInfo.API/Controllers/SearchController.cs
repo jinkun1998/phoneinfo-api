@@ -29,7 +29,7 @@ namespace PhoneInfo.API.Controllers
 			(string response, HttpStatusCode statusCode) = await SearchService.SearchAll(keyword);
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(SearchParser.Parse(response, SearchParser.SearchType.ALL));
+				ResponseOK(SearchParser.Parse(response, SearchParser.SearchType.All));
 		}
 	}
 }

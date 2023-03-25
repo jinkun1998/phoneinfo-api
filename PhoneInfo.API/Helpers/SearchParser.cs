@@ -10,14 +10,14 @@ namespace PhoneInfo.API.Helpers
 	{
 		public enum SearchType
 		{
-			ALL
+			All
 		}
 
 		public static object Parse(string html, SearchType type)
 		{
 			return type switch
 			{
-				SearchType.ALL => SearchAll(html),
+				SearchType.All => SearchAll(html),
 				_ => string.Empty
 			};
 		}

@@ -11,16 +11,16 @@ namespace PhoneInfo.API.Helpers
 	{
 		public enum CatalogType
 		{
-			BRANCHS, BRANCH, DEVICE
+			Branchs, Branch, Device
 		}
 
 		public static object Parse(string html, CatalogType type)
 		{
 			return type switch
 			{
-				CatalogType.BRANCHS => Branchs(html),
-				CatalogType.BRANCH => Branch(html),
-				CatalogType.DEVICE => Device(html),
+				CatalogType.Branchs => Branchs(html),
+				CatalogType.Branch => Branch(html),
+				CatalogType.Device => Device(html),
 				_ => string.Empty
 			};
 		}
