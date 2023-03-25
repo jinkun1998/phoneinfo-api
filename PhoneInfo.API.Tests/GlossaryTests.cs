@@ -9,7 +9,7 @@ namespace PhoneInfo.API.Tests
 	[TestFixture]
 	public class GlossaryTests
 	{
-		private IGlossaryService? _glossaryService;
+		private IGlossaryService _glossaryService;
 
 		[SetUp]
 		public void SetUp()

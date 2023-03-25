@@ -3,7 +3,7 @@
 	[TestFixture]
 	public class DealTests
 	{
-		private IDealService? _dealService;
+		private IDealService _dealService;
 
 		[SetUp]
 		public void SetUp()

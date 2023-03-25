@@ -4,18 +4,28 @@
 	{
 		public static void Setup()
 		{
-			_services ??= new ServiceCollection();
-			_services.AddSingleton(Configuration);
-			_services.AddHttpServiceLayer();
-			_services.AddCatalogService();
-			_services.AddDealService();
-			_services.AddSearchService();
-			_services.AddGlossaryService();
+			Services.AddSingleton(Configuration);
+            Services.AddHttpServiceLayer();
+            Services.AddCatalogService();
+            Services.AddDealService();
+            Services.AddSearchService();
+            Services.AddGlossaryService();
 		}
 
-		private static IServiceCollection? _services;
+		private static IServiceCollection _services;
+		private static IServiceCollection Services
+		{
+			get
+			{
+				if (_services == null)
+				{
+					_services = new ServiceCollection();
+				}
+				return _services;
+            }
+		}
 
-		private static IServiceProvider? _serviceProvider;
+		private static IServiceProvider _serviceProvider;
 		private static IServiceProvider ServiceProvider
 		{
 			get

@@ -3,7 +3,7 @@
 	[TestFixture]
 	public class SearchTests
 	{
-		private ISearchService? _searchService;
+		private ISearchService _searchService;
 
 		[SetUp]
 		public void SetUp()
