@@ -89,37 +89,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"phoneinfo-api" /o:"jin-personal" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build ${{ matrix.project }}
-          dotnet test
+          dotnet test --collect "Code Coverage"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           
-  deploy:
-    needs: build
-    name: Deploy to self-hosted
-    runs-on: self-hosted
-     
-    strategy:
-      matrix:
-        dotnet: [7.0.x]
-        
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.7.0
-        
-      - name: Setup .NET Core SDK ${{matrix.dotnet-version}}
-        uses: actions/setup-dotnet@v3.0.3
-        with:
-          dotnet-version: ${{matrix.dotnet-version}}
-          
-      - name: Install dependency
-        run: dotnet restore PhoneInfo.API.sln
-        
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Publish
-        run: dotnet publish -c Release -o /home/parallels/Desktop/www/phoneinfo-api
-        
-      - name: Restart the app
-        run: |
-          export XDG_RUNTIME_DIR=/run/user/$(id -u)
-          systemctl --user restart phoneinfo-api.service
