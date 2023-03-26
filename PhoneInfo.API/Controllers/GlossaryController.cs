@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using PhoneInfo.API.Domain.Bases;
 using PhoneInfo.API.Domain.Interfaces;
 using PhoneInfo.API.Helpers;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace PhoneInfo.API.Controllers
 			(string response, HttpStatusCode statusCode) = await GlossaryService.GetGlossaries();
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(GlossaryParser.Parse(response, GlossaryParser.GlossaryType.LIST));
+				ResponseOK(GlossaryParser.Parse(response, GlossaryParser.GlossaryType.List));
 		}
 
 		[HttpGet("term")]
@@ -37,7 +38,7 @@ namespace PhoneInfo.API.Controllers
 			(string response, HttpStatusCode statusCode) = await GlossaryService.GetTerm(id);
 			return statusCode is not HttpStatusCode.OK ?
 				ResponseBadRequest(null, "Error", (int)statusCode) :
-				ResponseOK(GlossaryParser.Parse(response, GlossaryParser.GlossaryType.TERM));
+				ResponseOK(GlossaryParser.Parse(response, GlossaryParser.GlossaryType.Term));
 		}
 	}
 }

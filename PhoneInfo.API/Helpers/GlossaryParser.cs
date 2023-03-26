@@ -9,15 +9,15 @@ namespace PhoneInfo.API.Helpers
 	{
 		public enum GlossaryType
 		{
-			LIST, TERM
+			List, Term
 		}
 
 		public static object Parse(string html, GlossaryType type)
 		{
 			return type switch
 			{
-				GlossaryType.LIST => Glossaries(html),
-				GlossaryType.TERM => Term(html),
+				GlossaryType.List => Glossaries(html),
+				GlossaryType.Term => Term(html),
 				_ => string.Empty
 			};
 		}
@@ -27,13 +27,14 @@ namespace PhoneInfo.API.Helpers
 			HtmlDocument doc = new();
 			doc.LoadHtml(html);
 
+			// get body (#body)
 			HtmlNode body = doc
 				.DocumentNode
 				.Descendants()?
 				.Where(d => d.Id == "body")?
 				.FirstOrDefault();
 
-
+			// #body > .review-header > .article-hgroup > h1
 			string title = body
 				.Descendants()?
 				.Where(c => c.HasClass("review-header"))?
@@ -44,6 +45,7 @@ namespace PhoneInfo.API.Helpers
 				.SelectSingleNode("h1")?
 				.InnerText;
 
+			// #body > .st-text
 			string text = body
 				.Descendants()?
 				.FirstOrDefault(c => c.HasClass("st-text") && c.HasChildNodes)?
@@ -91,7 +93,6 @@ namespace PhoneInfo.API.Helpers
 					}
 				}
 			}
-
 			return responses;
 		}
 	}

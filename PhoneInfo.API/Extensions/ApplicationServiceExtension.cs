@@ -10,6 +10,7 @@ namespace PhoneInfo.API.Extensions
 		public static void AddCatalogService(this IServiceCollection services) => services.AddScoped<ICatalogService, CatalogService>();
 		public static void AddDealService(this IServiceCollection services) => services.AddScoped<IDealService, DealService>();
 		public static void AddGlossaryService(this IServiceCollection services) => services.AddScoped<IGlossaryService, GlossaryService>();
+		public static void AddSearchService(this IServiceCollection services) => services.AddScoped<ISearchService, SearchService>();
 		#endregion
 	}
 }

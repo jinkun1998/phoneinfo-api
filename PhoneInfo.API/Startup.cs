@@ -37,6 +37,7 @@ namespace PhoneInfo.API
 			services.AddCatalogService();
 			services.AddDealService();
 			services.AddGlossaryService();
+			services.AddSearchService();
 
 			#endregion Services
 		}
