@@ -92,3 +92,15 @@ jobs:
           dotnet test --collect "Code Coverage"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-lastest
+    
+    strategy:
+      matrix:
+        platform: [ "Netlify" ]
+        
+    steps:
+      - name: Deploy to ${{ matrix.platform }}
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/641fdee1aa6fd2610cec42e2
