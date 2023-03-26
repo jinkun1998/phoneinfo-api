@@ -3,7 +3,7 @@ name: Restore, build and test
 on:
   push:
     branches:
-        ["main", "dev"]
+        ["main", "stag", "dev"]
 jobs:
   analyze:
     name: Analyze with CodeQL
