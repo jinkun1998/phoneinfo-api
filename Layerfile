@@ -17,6 +17,7 @@ RUN apt-get update && \
 # copy files from the repository into this staging server
 COPY . .
 
-RUN docker build -t phoneinfo-api:latest .
-RUN docker run -d -p 9001:9001 --name phoneinfo-api -it phoneinfo-api:latest
+RUN docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+RUN docker rm -f ${{ env.DOCKER_CONTAINER_NAME }}
+RUN docker run -d -p 9001:9001 --name ${{ env.DOCKER_CONTAINER_NAME }} -it ${{ DOCKER_IMAGE_NAME }}
 EXPOSE WEBSITE http://localhost:9001
